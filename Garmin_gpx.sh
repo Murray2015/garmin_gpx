@@ -9,9 +9,13 @@ infile=$1
 ./garmin_gpx.py $infile
 
 datfile="temp.csv"
-rgn=`gmtinfo temp.csv -I0.001 -i1,2`
-prj="-JM3i"
+basemap="/home/murray/Documents/Work/global_data/ETOPO1_Ice_g_gmt4.grd"
+rgn=`gmtinfo temp.csv -I0.001 -i2,1`
+prj="-JM6i"
 mapfile="map.ps"
+scalelat=`gmtinfo temp.csv -I0.001 -i2,1 | awk 'BEGIN{FS="/"}{print $3}'`
 
-psxy $datfile -Wred $prj $rgn -P -i1,2 -B0.1 > $mapfile
+grdimage $basemap $rgn $prj -Cetopo1 -P -K > $mapfile
+pscoast $prj $rgn -Ia -Df -Lx5.5i/0.5i+c${scalelat}+w2.5k -K -O >> $mapfile
+psxy $datfile -Wred $prj $rgn -i2,1 -B0.1 -O >> $mapfile
 evince $mapfile
