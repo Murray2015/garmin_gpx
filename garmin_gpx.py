@@ -23,4 +23,4 @@ minlat = np.min(garmin_track.Latitude)
 minlong = np.min(garmin_track.Longitude)
 
 print(maxlat, maxlong, minlat, minlong)
-garmin_track.to_csv('temp.csv')
+garmin_track.to_csv('gps_track.csv')
